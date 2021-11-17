@@ -26,21 +26,18 @@ skip.if(developmentChains.includes(network.name)).
       const fee = networkConfig[chainId]['fee']
 
 
-      APIConsumer = await ethers.getContractFactory('APIConsumer');
+      let APIConsumer = await ethers.getContractFactory('APIConsumer');
       apiConsumer = await APIConsumer.deploy(oracle, jobId, fee, linkTokenAddress);
       await apiConsumer.deployed();
     });
 
-/*
-    beforeEach(async () => {
+
+    beforeEach(async  () => {
       const APIConsumer = await deployments.get('APIConsumer')
       apiConsumer = await ethers.getContractAt('APIConsumer', APIConsumer.address)
     })
-*/
-    it('Should successfully make an external API request and get a result', async () => {
-      const APIConsumer = await deployments.get('APIConsumer')
-      apiConsumer = await ethers.getContractAt('APIConsumer', APIConsumer.address)
 
+    it('Should successfully make an external API request and get a result', async () => {
       const transaction = await apiConsumer.requestVolumeData()
       const tx_receipt = await transaction.wait()
       const requestId = tx_receipt.events[0].topics[1]
