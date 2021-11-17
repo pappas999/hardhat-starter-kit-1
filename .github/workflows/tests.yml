@@ -31,16 +31,14 @@ jobs:
         PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
     - run: echo "Here is the key"
-    - run: echo ${{ secrets.KOVAN_RPC_URL }}
     - run: echo ${{ secrets.KOVAN_RPC_URL }} | sed 's/./& /g'
     - run: npm install
-    - run: npm run build --if-present
-    - run: npx hardhat deploy --network kovan
+    - run: yarn test
       env: 
         KOVAN_RPC_URL: ${{ secrets.KOVAN_RPC_URL }}
         PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
-    - run: yarn test
+    - run: npx hardhat deploy --network kovan
       env: 
         KOVAN_RPC_URL: ${{ secrets.KOVAN_RPC_URL }}
         PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
