@@ -26,6 +26,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+      env: 
+        KOVAN_RPC_URL: ${{ secrets.KOVAN_RPC_URL }}
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
     - run: npm install
     - run: npm run build --if-present
     - run: npm test
