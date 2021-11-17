@@ -31,13 +31,16 @@ skip.if(developmentChains.includes(network.name)).
       await apiConsumer.deployed();
     });
 
-
+/*
     beforeEach(async () => {
       const APIConsumer = await deployments.get('APIConsumer')
       apiConsumer = await ethers.getContractAt('APIConsumer', APIConsumer.address)
     })
-
+*/
     it('Should successfully make an external API request and get a result', async () => {
+      const APIConsumer = await deployments.get('APIConsumer')
+      apiConsumer = await ethers.getContractAt('APIConsumer', APIConsumer.address)
+
       const transaction = await apiConsumer.requestVolumeData()
       const tx_receipt = await transaction.wait()
       const requestId = tx_receipt.events[0].topics[1]
