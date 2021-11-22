@@ -3,14 +3,36 @@ const { expect } = require('chai')
 const BN = require('bn.js')
 chai.use(require('chai-bn')(BN))
 const skipIf = require('mocha-skip-if')
+const { networkConfig } = require('../../helper-hardhat-config')
 const { developmentChains } = require('../../helper-hardhat-config')
+const { ethers } = require("hardhat");
+const hre = require("hardhat");
+
 
 skip.if(developmentChains.includes(network.name)).
   describe('APIConsumer Integration Tests', async function () {
 
     let apiConsumer
+    const networkName = hre.network.name
+    const chainId = Object.keys(networkConfig).find(key => networkConfig[key].name === networkName);
+    let linkTokenAddress
+    let oracle
 
-    beforeEach(async () => {
+
+    before(async function () {
+      linkTokenAddress = networkConfig[chainId]['linkToken']
+      oracle = networkConfig[chainId]['oracle']
+      const jobId = ethers.utils.toUtf8Bytes(networkConfig[chainId]['jobId'])
+      const fee = networkConfig[chainId]['fee']
+
+
+      let APIConsumer = await ethers.getContractFactory('APIConsumer');
+      apiConsumer = await APIConsumer.deploy(oracle, jobId, fee, linkTokenAddress);
+      await apiConsumer.deployed();
+    });
+
+
+    beforeEach(async  () => {
       const APIConsumer = await deployments.get('APIConsumer')
       apiConsumer = await ethers.getContractAt('APIConsumer', APIConsumer.address)
     })
