@@ -40,7 +40,7 @@ skip.if(developmentChains.includes(network.name)).
 
 
       //wait 60 secs for oracle to callback!
-      await new Promise(resolve => setTimeout(resolve, 90001))
+      await new Promise(resolve => setTimeout(resolve, 90002))
 
       const result = await randomNumberConsumer.randomResult()
       console.log("VRF Result: ", new ethers.BigNumber.from(result._hex).toString())
